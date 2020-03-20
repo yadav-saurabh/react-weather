@@ -1,0 +1,26 @@
+/* colors */
+$white: #fff;
+$black: #000;
+
+$blue: #7fccf7;
+$lite-blue: #d9f0fd;
+$lite-grey: #e6e6e6;
+
+/* sidebar */
+$sidebar-width: 300px;
+
+/* breakpoints (same as antd)*/
+$xs: 480px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1600px;
+
+
+
+
+
+:export {
+  sidebarWidth: $sidebar-width;
+}

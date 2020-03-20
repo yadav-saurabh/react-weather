@@ -1,0 +1,42 @@
+@import "./../../styles/variables";
+
+.sider {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  z-index: 9999;
+  @media (max-width: $md) {
+    overflow: unset;
+  }
+}
+
+.headWrapper {
+  min-width: $sidebar-width;
+}
+
+.backDrop {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $black;
+  opacity: 0.3;
+  @media (max-width: $md) {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+.toggler {
+  position: absolute;
+  top: 4rem;
+  right: -2.5rem;
+  background-color: $white;
+  padding: 0.5rem;
+}
+
+.menuIcon {
+  font-size: 1.5rem;
+}

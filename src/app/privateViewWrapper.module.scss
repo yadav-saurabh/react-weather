@@ -1,0 +1,12 @@
+@import "./../styles/variables";
+
+.container {
+  height: 100vh;
+}
+.contentWrapper {
+  margin-left: $sidebar-width;
+
+  @media (max-width: $md) {
+    margin-left: 0;
+  }
+}
