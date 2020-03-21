@@ -8,6 +8,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { setSidebarStatus } from "./../../actions/status";
+import { logout } from "./../../actions/user";
 
 import scssVariables from "./../../styles/_variables.scss";
 import styles from "./sidebar.module.scss";
@@ -15,11 +16,22 @@ import styles from "./sidebar.module.scss";
 const { Sider } = Layout;
 const { Title, Text } = Typography;
 
-const SideBar = () => {
+const SideBar = ({ location, history }) => {
   const dispatch = useDispatch();
 
   const { imgSrc, name, email } = useSelector(state => state.user);
   const sidebar = useSelector(state => state.status.sidebar);
+
+  const menu = [
+    { path: "/", key: "home", name: "Home" },
+    { path: "/history", key: "history", name: "History" },
+    { path: "/protected", key: "protected", name: "Protected" }
+  ];
+
+  const onLogout = () => {
+    dispatch(logout());
+    history.push("/login");
+  };
 
   return (
     <>
@@ -45,10 +57,19 @@ const SideBar = () => {
           </Col>
         </Row>
 
-        <Menu mode="inline" defaultSelectedKeys={["1"]} className="mt-5">
-          <Menu.Item key="1">option1</Menu.Item>
-          <Menu.Item key="2">option2</Menu.Item>
-          <Menu.Item key="3">option3</Menu.Item>
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={location.pathname.substring(1) || "home"}
+          className="mt-5"
+        >
+          {menu.map(d => (
+            <Menu.Item key={d.key} onClick={() => history.push(d.path)}>
+              {d.name}
+            </Menu.Item>
+          ))}
+          <Menu.Item key="logout" onClick={onLogout}>
+            Logout
+          </Menu.Item>
         </Menu>
 
         {/* sidebar toggler */}

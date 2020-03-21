@@ -7,6 +7,7 @@ import PrivateViewWrapper from "./privateViewWrapper";
 
 import Login from "./../pages/login";
 import Home from "./../pages/home";
+import History from "./../pages/history";
 import Public from "./../pages/public";
 import Protected from "./../pages/protected";
 
@@ -28,6 +29,7 @@ const App = () => {
   /* all protected routes */
   const privateRoutes = [
     { path: "/", component: Home },
+    { path: "/history", component: History },
     { path: "/protected", component: Protected }
   ];
 
@@ -45,11 +47,12 @@ const App = () => {
         {/*  private rotes if logged in else redirect to login */}
         {privateRoutes.map(d => (
           <Route
+            exact
             key={d.path}
             path={d.path}
             render={props =>
               isLogged ? (
-                <PrivateViewWrapper Component={d.component} />
+                <PrivateViewWrapper {...props} component={d.component} />
               ) : (
                 <Redirect
                   to={{

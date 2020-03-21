@@ -1,4 +1,4 @@
-import { LOGOUT } from "./../constants/actionTypes";
+import { RESET_USER_DATA } from "./../constants/actionTypes";
 
 const initialState = {
   email: "saurabhyadav4321@gmail.com",
@@ -13,7 +13,7 @@ const user = (state = initialState, { type, payload }) => {
     //     ...state,
     //     isLogged: payload
     //   };
-    case LOGOUT:
+    case RESET_USER_DATA:
       return initialState;
     default:
       return state;

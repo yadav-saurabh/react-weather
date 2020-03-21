@@ -1,4 +1,4 @@
-// import { SET_USER_LOGIN } from "../constants/actionTypes";
+import { RESET_USER_DATA, SET_LOGIN_STATUS } from "../constants/actionTypes";
 import { login } from "../services/auth";
 
 export const requestLogin = ({ email, password }) => async dispatch => {
@@ -22,5 +22,21 @@ export const requestLogin = ({ email, password }) => async dispatch => {
   } catch (error) {
     console.log(error);
     return error;
+  }
+};
+
+export const logout = () => dispatch => {
+  try {
+    localStorage.clear();
+    dispatch({
+      type: SET_LOGIN_STATUS,
+      payload: false
+    });
+    dispatch({
+      type: RESET_USER_DATA,
+      payload: {}
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

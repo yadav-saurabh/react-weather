@@ -4,12 +4,12 @@ import SideBar from "../components/sidebar";
 
 import styles from "./privateViewWrapper.module.scss";
 
-const PrivateViewWrapper = ({ Component }) => {
+const PrivateViewWrapper = ({ component: Component, ...rest }) => {
   return (
     <Layout className={styles.container}>
-      <SideBar />
+      <SideBar {...rest} />
       <Layout className={styles.contentWrapper}>
-        <Component />
+        <Component {...rest} />
       </Layout>
     </Layout>
   );
