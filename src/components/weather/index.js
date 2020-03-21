@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Card, Row, Col, Typography, List } from "antd";
-import { getWeather, getForecast } from "../../services/weather";
+import { getWeather, getForecast, saveWeather } from "../../services/weather";
 
 import { mapDataToWeather } from "./helperFunctions";
 import CardHeader from "./cardHeader";
@@ -33,6 +33,7 @@ const getData = async city => {
     if (Object.entries(wData).length) {
       weather = mapDataToWeather(wData);
     }
+    saveWeather(weather);
 
     if (Object.entries(fData).length) {
       for (let i = 0; i < fData.list.length; i += 8) {
@@ -56,10 +57,13 @@ const Weather = ({ city }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setError("");
       const { data, error } = await getData(city);
+      console.log(data);
       setLoading(false);
       if (error) {
         setError(error.message);
+        return;
       }
       setWeather(data.weather);
       setForecast(data.forecast);
@@ -68,45 +72,8 @@ const Weather = ({ city }) => {
   }, [city]);
 
   return (
-    <Card
-      className="mt-5"
-      headStyle={{ border: "none" }}
-      title={!loading && <CardHeader data={weather} />}
-      loading={loading}
-    >
-      <Row>
-        <Col span={14}>
-          <Title style={{ fontSize: "5rem", fontWeight: 100, margin: 0 }}>
-            {Math.round(weather.temperature)}&deg;C
-          </Title>
-          <Text>
-            <i className="wi wi-strong-wind" style={smallIcon} />
-            {weather.windSpeed} km/h Winds
-          </Text>
-          <i className="wi wi-humidity ml-4" style={smallIcon} />
-          <Text>{weather.humidity}% Humidity</Text>
-        </Col>
-        <Col span={10} className="d-center">
-          <i
-            className={`wi wi-owm-${weather.iconId}`}
-            style={{ fontSize: "6.5rem" }}
-          />
-        </Col>
-      </Row>
-
-      <List
-        className="mt-5"
-        size="large"
-        bordered={false}
-        dataSource={forecast}
-        renderItem={({ date, iconId, min, max }) => (
-          <List.Item>
-            <ForeCastList date={date} iconId={iconId} min={min} max={max} />
-          </List.Item>
-        )}
-      />
-
-      {error && (
+    <>
+      {error ? (
         <Alert
           message="Error"
           description={error}
@@ -114,8 +81,47 @@ const Weather = ({ city }) => {
           closable
           onClose={() => setError("")}
         />
+      ) : (
+        <Card
+          className="mt-5"
+          headStyle={{ border: "none" }}
+          title={!loading && <CardHeader data={weather} />}
+          loading={loading}
+        >
+          <Row>
+            <Col span={14}>
+              <Title style={{ fontSize: "5rem", fontWeight: 100, margin: 0 }}>
+                {Math.round(weather.temperature)}&deg;C
+              </Title>
+              <Text>
+                <i className="wi wi-strong-wind" style={smallIcon} />
+                {weather.windSpeed} km/h Winds
+              </Text>
+              <i className="wi wi-humidity ml-4" style={smallIcon} />
+              <Text>{weather.humidity}% Humidity</Text>
+            </Col>
+            <Col span={10} className="d-center">
+              <i
+                className={`wi wi-owm-${weather.iconId}`}
+                style={{ fontSize: "6.5rem" }}
+              />
+            </Col>
+          </Row>
+
+          <List
+            className="mt-5"
+            size="large"
+            bordered={false}
+            dataSource={forecast}
+            renderItem={({ date, iconId, min, max }) => (
+              <List.Item>
+                <ForeCastList date={date} iconId={iconId} min={min} max={max} />
+              </List.Item>
+            )}
+          />
+        </Card>
       )}
-    </Card>
+    </>
   );
 };
 

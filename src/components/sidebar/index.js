@@ -1,4 +1,4 @@
-import React, { createElement } from "react";
+import React, { createElement, useEffect } from "react";
 import { Layout, Avatar, Typography, Menu, Row, Col } from "antd";
 import {
   UserOutlined,
@@ -8,7 +8,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { setSidebarStatus } from "./../../actions/status";
-import { logout } from "./../../actions/user";
+import { logoutUser, loadUserData } from "./../../actions/user";
 
 import scssVariables from "./../../styles/_variables.scss";
 import styles from "./sidebar.module.scss";
@@ -19,7 +19,7 @@ const { Title, Text } = Typography;
 const SideBar = ({ location, history }) => {
   const dispatch = useDispatch();
 
-  const { imgSrc, name, email } = useSelector(state => state.user);
+  const { avatar, name, email, id } = useSelector(state => state.user);
   const sidebar = useSelector(state => state.status.sidebar);
 
   const menu = [
@@ -28,8 +28,14 @@ const SideBar = ({ location, history }) => {
     { path: "/protected", key: "protected", name: "Protected" }
   ];
 
+  useEffect(() => {
+    if (!id) {
+      dispatch(loadUserData());
+    }
+  });
+
   const onLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     history.push("/login");
   };
 
@@ -47,7 +53,7 @@ const SideBar = ({ location, history }) => {
       >
         <Row className={[styles.headWrapper, "d-center mt-5"].join(" ")}>
           <Col span={7} className={"d-center"}>
-            <Avatar size={64} src={imgSrc} icon={<UserOutlined />} />
+            <Avatar size={64} src={avatar} icon={<UserOutlined />} />
           </Col>
           <Col>
             <Title level={3} style={{ margin: 0 }}>
