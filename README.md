@@ -1,4 +1,4 @@
-# Weather APp
+# Weather App
 
 A wether app in react with antd, using open weather API
 
